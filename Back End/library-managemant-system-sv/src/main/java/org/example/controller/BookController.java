@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.Book;
 import org.example.entity.BookEntity;
 import org.example.service.BookService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,5 +24,13 @@ public class BookController {
     @ResponseStatus(HttpStatus.FOUND)
     public Iterable<BookEntity> getBooks(){
         return service.getBooks();
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<String> deleteBooks(@PathVariable Long id){
+        return (service.deleteBook(id)) ?
+            ResponseEntity.ok("Deleted Successfully"):
+            ResponseEntity.notFound().build();
     }
 }
