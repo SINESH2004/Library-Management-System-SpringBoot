@@ -1,5 +1,6 @@
 package org.example.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.example.dto.Book;
 import org.example.entity.BookEntity;
 import org.example.repository.BookRepository;
@@ -9,11 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
-@Service
-public class BookServiceImpl implements BookService {
-    @Autowired
-    BookRepository repository;
+import java.util.List;
 
+@Service
+@RequiredArgsConstructor
+//You can use RequiredArgsConstructor instead of using Autowired annotation
+//for dependency injection
+public class BookServiceImpl implements BookService {
+
+    final BookRepository repository;
     ModelMapper mapper;
     @Bean
     public void setup(){
@@ -23,5 +28,10 @@ public class BookServiceImpl implements BookService {
     public void addBook(Book book) {
         BookEntity entity = mapper.map(book, BookEntity.class);
         repository.save(entity);
+    }
+
+    @Override
+    public List<BookEntity> getBooks() {
+        return (List<BookEntity>) repository.findAll();
     }
 }
